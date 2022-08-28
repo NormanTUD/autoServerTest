@@ -24,6 +24,12 @@ my %options = (
 
 analyze_args(@ARGV);
 
+sub msg (@) {
+	for (@_) {
+		warn color("blue").$_.color("reset")."\n";
+	}
+}
+
 sub e (@) {
 	my $exit_code = shift;
 	for (@_) {
@@ -197,6 +203,8 @@ sub main {
 	if(@mail_succeeded_part && $options{show_succeeded_tests}) {
 		$mail .= "OK:\n\n".join("\n", @mail_succeeded_part)."\n";
 	}
+
+	msg $mail;
 
 	if($options{send_mail}) {
 		my $mail_result = send_mail(@mail_failed_part ? "TEST(S) FAILED!" : "All tests ok", $mail);
